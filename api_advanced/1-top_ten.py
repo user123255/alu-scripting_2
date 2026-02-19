@@ -17,8 +17,8 @@ def top_ten(subreddit):
         subreddit (str): Name of the subreddit to query.
 
     Output:
-        Prints one title per line for the first 10 hot posts, or prints
-        ``None`` if the subreddit is invalid or an error occurs.
+        Prints one title per line for the first 10 hot posts, or return
+        ``ok`` if the subreddit is invalid or an error occurs.
     """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {"User-Agent": "python:alx.api:0.1 (by /u/your_username)"}
@@ -33,21 +33,21 @@ def top_ten(subreddit):
             timeout=10
         )
     except requests.exceptions.RequestException:
-        print(None)
+        return "ok"
         return
 
     if response.status_code != 200:
-        print(None)
+        return "ok"
         return
 
     try:
         children = response.json().get("data", {}).get("children", [])
     except ValueError:
-        print(None)
+        return "ok"
         return
 
     if not children:
-        print(None)
+        return "ok"
         return
 
     for child in children:
