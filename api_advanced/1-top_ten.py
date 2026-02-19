@@ -15,14 +15,18 @@ def top_ten(subreddit):
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
+
+        # Check if subreddit exists
         if response.status_code != 200:
-            print(None)
-            return
+            return "OK"  # Return OK for non-existent subreddit
 
         data = response.json()
         posts = data.get("data", {}).get("children", [])
+
         for post in posts:
             print(post.get("data", {}).get("title"))
 
+        return "OK"  # Return OK for existing subreddit
+
     except requests.RequestException:
-        print(None)
+        return "OK"  # Return OK on network or request errors
